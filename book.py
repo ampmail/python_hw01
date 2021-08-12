@@ -11,12 +11,29 @@ class Genre(Enum):
         return self.name
 
 
+class Annotation:
+    _text = []
+
+    def __repr__(self):
+        return self._text
+
+    def __str__(self):
+        a = ''
+        if len(self._text) > 0:
+            a = '> ' + '\n> '.join(map(str, self._text)) + '\n'
+        return a
+
+    def add_annotation(self, text):
+        self._text.append(text)
+
+
 class Book:
     _author = str
     _name = str
     _date = date
     _genre = Genre
     _annotation = []
+    # _a = Annotation()
 
     def __init__(self, name, author, set_date, genre):
         self._author = author
@@ -24,6 +41,7 @@ class Book:
         self._date = date(*set_date)
         self._genre = genre
         self._annotation = []
+        self._a = Annotation()
 
     def __eq__(self, other):
         if isinstance(other, Book):
@@ -42,14 +60,17 @@ class Book:
         return NotImplemented
 
     def __repr__(self):
-        return '{} / {} / {} / {} > {}'.format(self._author, self._name, self._date.year, self._genre, self._annotation)
+        return '{} / {} / {} / {} > {}'.format(self._author, self._name, self._date.year, self._genre, self._a)
 
     def __str__(self):
         a = ''
         if len(self._annotation) > 0:
             a = '> ' + '\n> '.join(map(str, self._annotation)) + '\n'
         return 'Author: {} \nName: {} \nDate: {} \nGenre: {}\n{}'.format(self._author, self._name, self._date.year,
-                                                                           self._genre, a)
+                                                                         self._genre, self._a)
 
     def add_annotation(self, text):
         self._annotation.append(text)
+
+    def add_a(self, text):
+        self._a.add_annotation(text)
